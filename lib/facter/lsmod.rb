@@ -31,9 +31,15 @@ if Facter::Util::Resolution.which('lsmod')
           retval[modulename][info] = Facter::Util::Resolution.exec("modinfo --field=#{info} #{modulename} 2>/dev/null").strip
         end
 
-        retval[modulename]['parm'] = []
-        Facter::Util::Resolution.exec("modinfo --field=parm #{modulename} 2>/dev/null").each_line do |txt|
-          retval[modulename]['parm'].push(txt.strip)
+        retval[modulename]['parm'] = {}
+        Facter::Util::Resolution.exec("grep '' /sys/module/#{modulename}/parameters/* 2>/dev/null").each_line do |txt|
+          if not txt =~ /.+:.+/
+            next
+          end
+          path = txt.split(':')[0]
+          parm = path.split('/').last
+          value = txt.split(':')[1].strip
+          retval[modulename]['parm'][parm] = value
         end
 
         retval[modulename]['alias'] = []
