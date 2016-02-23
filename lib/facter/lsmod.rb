@@ -51,13 +51,13 @@ if Facter::Util::Resolution.which('lsmod')
             retval[modulename]['parm'].sort
           })
 
-          waitforit.push(Thread.new {
-            retval[modulename]['alias'] = []
-            Facter::Util::Resolution.exec("modinfo --field=alias #{modulename} 2>/dev/null").each_line do |txt|
-              retval[modulename]['alias'].push(txt.strip)
-            end
-            retval[modulename]['alias'].sort
-          })
+          #waitforit.push(Thread.new {
+          #  retval[modulename]['alias'] = []
+          #  Facter::Util::Resolution.exec("modinfo --field=alias #{modulename} 2>/dev/null").each_line do |txt|
+          #    retval[modulename]['alias'].push(txt.strip)
+          #  end
+          #  retval[modulename]['alias'].sort
+          #})
 
           waitforit.push(Thread.new {
             retval[modulename]['depends'] = []
